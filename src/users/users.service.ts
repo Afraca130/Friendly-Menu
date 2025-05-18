@@ -40,4 +40,28 @@ export class UsersService {
     }
     return user;
   }
+
+  async findByKakaoId(kakaoId: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { kakaoId } });
+  }
+
+  async findOrCreateKakaoUser(data: {
+    kakaoId: string;
+    email?: string;
+    name: string;
+  }): Promise<User> {
+    let user = await this.findByKakaoId(data.kakaoId);
+
+    if (!user) {
+      user = this.usersRepository.create({
+        kakaoId: data.kakaoId,
+        email: data.email,
+        name: data.name,
+        password: await bcrypt.hash(Math.random().toString(36), 10), // 임의의 비밀번호 생성
+      });
+      user = await this.usersRepository.save(user);
+    }
+
+    return user;
+  }
 }
