@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Restaurant } from './entities/restaurant.entity';
+import { Restaurant, RestaurantStatus } from './entities/restaurant.entity';
 import { CreateRestaurantDto } from './dto/restaurant.dto';
 import { User } from '../users/entities/user.entity';
 
@@ -19,6 +19,7 @@ export class RestaurantsService {
     const restaurant = this.restaurantsRepository.create({
       ...createRestaurantDto,
       owner,
+      availableSeats: createRestaurantDto.totalSeats,
     });
     return this.restaurantsRepository.save(restaurant);
   }
@@ -46,6 +47,41 @@ export class RestaurantsService {
   ): Promise<Restaurant> {
     const restaurant = await this.findOne(id);
     restaurant.waitingCount += increment ? 1 : -1;
+
+    // 상태 업데이트
+    if (restaurant.waitingCount > 0) {
+      restaurant.status = RestaurantStatus.WAITING;
+    } else if (restaurant.availableSeats > restaurant.totalSeats * 0.7) {
+      restaurant.status = RestaurantStatus.MANY_SEATS;
+    } else {
+      restaurant.status = RestaurantStatus.NORMAL;
+    }
+
+    return this.restaurantsRepository.save(restaurant);
+  }
+
+  async updateSeats(id: number, availableSeats: number): Promise<Restaurant> {
+    const restaurant = await this.findOne(id);
+    restaurant.availableSeats = availableSeats;
+
+    // 상태 업데이트
+    if (restaurant.waitingCount > 0) {
+      restaurant.status = RestaurantStatus.WAITING;
+    } else if (availableSeats > restaurant.totalSeats * 0.7) {
+      restaurant.status = RestaurantStatus.MANY_SEATS;
+    } else {
+      restaurant.status = RestaurantStatus.NORMAL;
+    }
+
+    return this.restaurantsRepository.save(restaurant);
+  }
+
+  async updateStatus(
+    id: number,
+    status: RestaurantStatus,
+  ): Promise<Restaurant> {
+    const restaurant = await this.findOne(id);
+    restaurant.status = status;
     return this.restaurantsRepository.save(restaurant);
   }
 }
