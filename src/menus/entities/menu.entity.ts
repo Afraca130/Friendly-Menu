@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 
 @Entity()
@@ -17,6 +24,12 @@ export class Menu {
 
   @Column({ default: true })
   isAvailable: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.menus)
   restaurant: Restaurant;

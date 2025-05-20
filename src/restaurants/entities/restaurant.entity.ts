@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Menu } from '../../menus/entities/menu.entity';
 import { User } from '../../users/entities/user.entity';
@@ -61,6 +63,12 @@ export class Restaurant {
 
   @Column({ type: 'int', default: 0 })
   availableSeats: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToMany(() => Menu, (menu) => menu.restaurant)
   menus: Menu[];

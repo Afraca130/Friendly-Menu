@@ -1,6 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 import { Order } from '../../orders/entities/order.entity';
+
+export enum JoinType {
+  EMAIL = 'EMAIL',
+  KAKAO = 'KAKAO',
+}
 
 @Entity()
 export class User {
@@ -18,6 +30,19 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: JoinType,
+    default: JoinType.EMAIL,
+  })
+  joinType: JoinType;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Column({ nullable: true })
   kakaoId: string;
