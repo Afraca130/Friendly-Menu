@@ -10,6 +10,11 @@ import {
 import { Menu } from '../../menus/entities/menu.entity';
 import { User } from '../../users/entities/user.entity';
 import { Order } from '../../orders/entities/order.entity';
+import { TableType } from '../../table-types/entities/table-type.entity';
+import { Reservation } from '../../reservations/entities/reservation.entity';
+import { Waiting } from '../../waitings/entities/waiting.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { Favorite } from '../../favorites/entities/favorite.entity';
 
 export enum RestaurantStatus {
   MANY_SEATS = 'MANY_SEATS',
@@ -32,6 +37,15 @@ export class Restaurant {
 
   @Column()
   phoneNumber: string;
+
+  @Column('text')
+  description: string;
+
+  @Column()
+  businessHours: string;
+
+  @Column()
+  imageUrl: string;
 
   @Column({ default: true })
   isActive: boolean;
@@ -78,4 +92,19 @@ export class Restaurant {
 
   @ManyToOne(() => User, (user) => user.restaurants)
   owner: User;
+
+  @OneToMany(() => TableType, (tableType) => tableType.restaurant)
+  tableTypes: TableType[];
+
+  @OneToMany(() => Reservation, (reservation) => reservation.restaurant)
+  reservations: Reservation[];
+
+  @OneToMany(() => Waiting, (waiting) => waiting.restaurant)
+  waitings: Waiting[];
+
+  @OneToMany(() => Review, (review) => review.restaurant)
+  reviews: Review[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.restaurant)
+  favorites: Favorite[];
 }

@@ -3,30 +3,23 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { Reservation } from '../../reservations/entities/reservation.entity';
 
 @Entity()
-export class Menu {
+export class TableType {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
-
-  @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
-
-  @Column('text')
-  description: string;
+  typeName: string;
 
   @Column()
-  imageUrl: string;
-
-  @Column({ default: true })
-  isAvailable: boolean;
+  capacity: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -34,6 +27,9 @@ export class Menu {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menus)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.tableTypes)
   restaurant: Restaurant;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.tableType)
+  reservations: Reservation[];
 }

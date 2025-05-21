@@ -8,6 +8,11 @@ import {
 } from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 import { Order } from '../../orders/entities/order.entity';
+import { Reservation } from '../../reservations/entities/reservation.entity';
+import { Waiting } from '../../waitings/entities/waiting.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { PointTransaction } from '../../points/entities/point-transaction.entity';
+import { Favorite } from '../../favorites/entities/favorite.entity';
 
 export enum JoinType {
   EMAIL = 'EMAIL',
@@ -22,7 +27,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column()
@@ -38,18 +43,42 @@ export class User {
   })
   joinType: JoinType;
 
+  @Column({ nullable: true })
+  kakaoId: string;
+
+  @Column({ nullable: true })
+  phoneNumber: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  points: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column({ nullable: true })
-  kakaoId: string;
-
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservations: Reservation[];
+
+  @OneToMany(() => Waiting, (waiting) => waiting.user)
+  waitings: Waiting[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
+
+  @OneToMany(
+    () => PointTransaction,
+    (pointTransaction) => pointTransaction.user,
+  )
+  pointTransactions: PointTransaction[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 }

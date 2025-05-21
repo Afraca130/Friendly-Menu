@@ -6,27 +6,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 
 @Entity()
-export class Menu {
+export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
+  @Column({ type: 'int', width: 1 })
+  rating: number;
 
   @Column('text')
-  description: string;
-
-  @Column()
-  imageUrl: string;
-
-  @Column({ default: true })
-  isAvailable: boolean;
+  comment: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -34,6 +26,9 @@ export class Menu {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menus)
+  @ManyToOne(() => User, (user) => user.reviews)
+  user: User;
+
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.reviews)
   restaurant: Restaurant;
 }

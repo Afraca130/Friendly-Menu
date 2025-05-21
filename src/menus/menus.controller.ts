@@ -3,33 +3,33 @@ import {
   Get,
   Post,
   Body,
+  Patch,
   Param,
   Delete,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 import { MenusService } from './menus.service';
-import { CreateMenuDto } from './dto/menu.dto';
+import { CreateMenuDto } from './dto/create-menu.dto';
+import { UpdateMenuDto } from './dto/update-menu.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/entities/user.entity';
 
-@Controller('restaurants/:restaurantId/menus')
-@UseGuards(JwtAuthGuard)
+@Controller('menus')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class MenusController {
   constructor(private readonly menusService: MenusService) {}
 
   @Post()
-  create(
-    @Param('restaurantId') restaurantId: string,
-    @Body() createMenuDto: CreateMenuDto,
-  ) {
-    return this.menusService.create(createMenuDto, {
-      id: +restaurantId,
-    } as any);
+  @Roles(Role.OWNER)
+  create(@Body() createMenuDto: CreateMenuDto) {
+    return this.menusService.create(createMenuDto);
   }
 
   @Get()
-  findAll(@Param('restaurantId') restaurantId: string) {
-    return this.menusService.findAll(+restaurantId);
+  findAll() {
+    return this.menusService.findAll();
   }
 
   @Get(':id')
@@ -37,13 +37,20 @@ export class MenusController {
     return this.menusService.findOne(+id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: CreateMenuDto) {
+  @Patch(':id')
+  @Roles(Role.OWNER)
+  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
     return this.menusService.update(+id, updateMenuDto);
   }
 
   @Delete(':id')
+  @Roles(Role.OWNER)
   remove(@Param('id') id: string) {
     return this.menusService.remove(+id);
+  }
+
+  @Get('restaurant/:restaurantId')
+  findByRestaurant(@Param('restaurantId') restaurantId: string) {
+    return this.menusService.findByRestaurant(+restaurantId);
   }
 }
