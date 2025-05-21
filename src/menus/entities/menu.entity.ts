@@ -5,8 +5,10 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { MenuTranslation } from '../../menu-translations/entities/menu-translation.entity';
 
 @Entity()
 export class Menu {
@@ -36,4 +38,7 @@ export class Menu {
 
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.menus)
   restaurant: Restaurant;
+
+  @OneToMany(() => MenuTranslation, (translation) => translation.menu)
+  translations: MenuTranslation[];
 }
