@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApiResponseInterceptor } from './common/interceptors/api-response.interceptor';
 import { ErrorInterceptor } from './common/interceptors/error.interceptor';
-import { HttpException, HttpStatus } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,9 +14,12 @@ async function bootstrap() {
       transform: true,
       whitelist: true,
       exceptionFactory: (errors) => {
-        const messages = errors.map((error) =>
-          Object.values(error.constraints).join(', '),
-        );
+        const messages = errors.map((error) => {
+          if (error.constraints) {
+            return Object.values(error.constraints).join(', ');
+          }
+          return 'Validation failed';
+        });
         return new HttpException(
           {
             message: 'Validation failed',

@@ -22,11 +22,15 @@ export class ErrorInterceptor implements NestInterceptor {
         if (error instanceof HttpException) {
           status = error.getStatus();
           const response = error.getResponse();
-          message =
-            typeof response === 'string' ? response : response['message'];
-          errors = Array.isArray(response['message'])
-            ? response['message']
-            : [message];
+          if (typeof response === 'string') {
+            message = response;
+            errors = [response];
+          } else if (typeof response === 'object') {
+            message = response['message'] || message;
+            errors = Array.isArray(response['message'])
+              ? response['message']
+              : [message];
+          }
         } else if (error instanceof Error) {
           message = error.message;
           errors = [error.message];
