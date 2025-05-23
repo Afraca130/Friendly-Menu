@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
@@ -9,6 +8,7 @@ import {
 import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 import { TableType } from '../../table-types/entities/table-type.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum ReservationStatus {
   PENDING = 'PENDING',
@@ -18,10 +18,7 @@ export enum ReservationStatus {
 }
 
 @Entity()
-export class Reservation {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Reservation extends BaseEntity {
   @Column({ type: 'timestamp' })
   reservationTime: Date;
 

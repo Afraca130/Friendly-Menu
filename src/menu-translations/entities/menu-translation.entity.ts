@@ -1,18 +1,15 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Menu } from '../../menus/entities/menu.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()
-export class MenuTranslation {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class MenuTranslation extends BaseEntity {
   @Column()
   originalText: string;
 

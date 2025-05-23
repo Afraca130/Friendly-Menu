@@ -1,12 +1,7 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum OrderStatus {
   WAITING = 'WAITING',
@@ -16,10 +11,7 @@ export enum OrderStatus {
 }
 
 @Entity()
-export class Order {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Order extends BaseEntity {
   @Column({ type: 'int' })
   waitingNumber: number;
 

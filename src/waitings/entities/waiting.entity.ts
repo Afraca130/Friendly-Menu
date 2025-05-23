@@ -1,13 +1,13 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum WaitingStatus {
   WAITING = 'WAITING',
@@ -16,10 +16,7 @@ export enum WaitingStatus {
 }
 
 @Entity()
-export class Waiting {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Waiting extends BaseEntity {
   @Column({ type: 'timestamp' })
   waitingTime: Date;
 

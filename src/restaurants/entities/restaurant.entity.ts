@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
   CreateDateColumn,
@@ -15,6 +14,7 @@ import { Reservation } from '../../reservations/entities/reservation.entity';
 import { Waiting } from '../../waitings/entities/waiting.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { Favorite } from '../../favorites/entities/favorite.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum RestaurantStatus {
   MANY_SEATS = 'MANY_SEATS',
@@ -25,10 +25,7 @@ export enum RestaurantStatus {
 }
 
 @Entity()
-export class Restaurant {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Restaurant extends BaseEntity {
   @Column()
   name: string;
 

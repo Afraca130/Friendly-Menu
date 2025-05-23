@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
@@ -13,6 +12,7 @@ import { Waiting } from '../../waitings/entities/waiting.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { PointTransaction } from '../../points/entities/point-transaction.entity';
 import { Favorite } from '../../favorites/entities/favorite.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum JoinType {
   EMAIL = 'EMAIL',
@@ -20,10 +20,7 @@ export enum JoinType {
 }
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 

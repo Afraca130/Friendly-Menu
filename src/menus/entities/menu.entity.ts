@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
@@ -9,12 +8,10 @@ import {
 } from 'typeorm';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 import { MenuTranslation } from '../../menu-translations/entities/menu-translation.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()
-export class Menu {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Menu extends BaseEntity {
   @Column()
   name: string;
 

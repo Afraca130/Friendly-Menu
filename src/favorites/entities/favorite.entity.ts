@@ -1,17 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()
-export class Favorite {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Favorite extends BaseEntity {
   @CreateDateColumn()
   createdAt: Date;
 

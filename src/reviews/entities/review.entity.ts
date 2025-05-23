@@ -1,19 +1,16 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()
-export class Review {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Review extends BaseEntity {
   @Column({ type: 'int', width: 1 })
   rating: number;
 
