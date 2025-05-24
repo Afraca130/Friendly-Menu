@@ -3,17 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { RestaurantsModule } from './restaurants/restaurants.module';
-import { MenusModule } from './menus/menus.module';
-import { OrdersModule } from './orders/orders.module';
-import { User } from './users/entities/user.entity';
-import { Restaurant } from './restaurants/entities/restaurant.entity';
-import { Menu } from './menus/entities/menu.entity';
-import { Order } from './orders/entities/order.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { RestaurantsModule } from './modules/restaurants/restaurants.module';
+import { MenusModule } from './modules/menus/menus.module';
+import { OrdersModule } from './modules/orders/orders.module';
 import { CommonModule } from './common/common.module';
-import { MenuTranslationsModule } from './menu-translations/menu-translations.module';
+import { MenuTranslationsModule } from './modules/menu-translations/menu-translations.module';
 
 @Module({
   imports: [
