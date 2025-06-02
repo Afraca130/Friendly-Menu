@@ -21,12 +21,12 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Button
             title="Find Restaurants"
-            onPress={() => navigation.navigate("RestaurantList")}
+            onPress={() => navigation.navigate("Restaurants")}
             style={styles.button}
           />
           <Button
             title="My Reservations"
-            onPress={() => navigation.navigate("MyReservations")}
+            onPress={() => navigation.navigate("Reservations")}
             variant="secondary"
             style={styles.button}
           />
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
+    marginBottom: 16,
   },
 });
 
